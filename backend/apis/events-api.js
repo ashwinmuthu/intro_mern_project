@@ -4,60 +4,64 @@ const apiRouter = express.Router();
 
     console.log('entered api');
     let Todo = require('../models/todo.model');
+    let Event = require('../models/Event');
 
 	apiRouter.get('/', function(req, res) {
-	    console.log('entered api route');
-		Todo.find(function(err, todos) {
+		Event.find(function(err, events) {
 			if (err) {
 		        console.log(err);
 			} else {
-				res.json(todos);
+				res.json(events);
 			}
 		 });
 	  });
 
-//	todoRoutes.route('/:id').get(function(req, res) {
-//		let id = req.params.id;
-//		Todo.findById(id, function(err, todo) {
-//			res.json(todo);
-//		});
-//	});
-//
-//	todoRoutes.route('/delete/:id').post(function(req, res) {
-//		Todo.remove({ _id: req.params.id }, function(err) {
-//			if (err)
-//			res.status(404).send("data is not found");
-//		else
-//			res.json('Todo deleted!');
-//		});
-//	});
-//
-//	todoRoutes.route('/add').post(function(req, res) {
-//		let todo = new Todo(req.body);
-//		todo.save()
-//			.then(todo => {
-//				res.status(200).json({'todo': 'todo added successfully'});
-//			})
-//			.catch(err => {
-//				res.status(400).send('adding new todo failed');
-//			});
-//	});
-//
-//	todoRoutes.route('/update/:id').post(function(req, res) {
-//		Todo.findById(req.params.id, function(err, todo) {
-//			if (!todo)
-//				res.status(404).send("data is not found");
-//			else
-//				todo.todo_description = req.body.todo_description;
-//				todo.todo_responsible = req.body.todo_responsible;
-//				todo.todo_priority = req.body.todo_priority;
-//				todo.todo_completed = req.body.todo_completed;
-//				todo.save().then(todo => {
-//					res.json('Todo updated!');
-//				})
-//				.catch(err => {
-//					res.status(400).send("Update not possible");
-//				});
-//		});
-//	});
+	apiRouter.get('/:id', function(req, res) {
+		let id = req.params.id;
+		Event.findById(id, function(err, event) {
+			res.json(event);
+		});
+	});
+
+	apiRouter.post('/delete/:id', function(req, res) {
+		Event.findByIdAndDelete({ _id: req.params.id }, function(err) {
+			if (err)
+			res.status(404).send("data is not found");
+		else
+			res.json('Event deleted!');
+		});
+	});
+
+	apiRouter.route('/add').post(function(req, res) {
+		let event = new Event(req.body);
+		event.save()
+			.then(event => {
+				res.status(200).json({'event': 'event added successfully'});
+			})
+			.catch(err => {
+				res.status(400).send('adding new event failed');
+			});
+	});
+
+	apiRouter.post('/update/:id', function(req, res) {
+		Event.findById(req.params.id, function(err, event) {
+        	if (!event)
+				res.status(404).send("data is not found");
+			else
+				event.title = req.body.title;
+				event.description = req.body.description;
+				event.time_spent = req.body.time_spent;
+				event.collaborators = req.body.collaborators;
+				event.difficulty = req.body.difficulty;
+				event.category = req.body.category;
+				event.completed = req.body.completed;
+				event.date = req.body.date;
+				event.save().then(event => {
+                    res.json('Event updated!');
+                })
+				.catch(err => {
+					res.status(400).send("Update not possible");
+				});
+		});
+	});
 module.exports = apiRouter;

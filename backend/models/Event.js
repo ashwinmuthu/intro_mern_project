@@ -2,14 +2,26 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let Event = new Schema({
+    title: {
+        type: String
+    },
     description: {
         type: String
     },
-    responsible: {
+    time_spent: {
+        type: Number
+    },
+    collaborators: {
         type: String
     },
-    priority: {
+    difficulty: {
+        type: Number
+    },
+    category: {
         type: String
+    },
+    date: {
+        type: Date
     },
     completed: {
         type: Boolean

@@ -10,7 +10,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://127.0.0.1:27017/events', { useNewUrlParser: true });
+mongoose.connect('mongodb://127.0.0.1:27017/events', { useNewUrlParser: true,  useUnifiedTopology: true });
 const connection = mongoose.connection;
 
 connection.once('open', function() {

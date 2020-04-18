@@ -55,7 +55,7 @@ const apiRouter = express.Router();
 				event.difficulty = req.body.difficulty;
 				event.category = req.body.category;
 				event.completed = req.body.completed;
-				event.date = req.body.date;
+				event.startDate = req.body.startDate;
 				event.save().then(event => {
                     res.json('Event updated!');
                 })

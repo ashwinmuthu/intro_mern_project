@@ -20,7 +20,7 @@ let Event = new Schema({
     category: {
         type: String
     },
-    date: {
+    startDate: {
         type: Date
     },
     completed: {

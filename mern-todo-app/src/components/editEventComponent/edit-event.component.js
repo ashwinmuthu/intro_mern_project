@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import DatePicker from "react-datepicker";
+import { parseISO } from 'date-fns'; 
+ 
+import "react-datepicker/dist/react-datepicker.css";
+import "./edit-event.component.css";
 
 
 export default class EditEvent extends Component {
@@ -12,7 +17,8 @@ export default class EditEvent extends Component {
             collaborators: '',
             difficulty: 0, 
             category: '',
-            completed: false
+            completed: false,
+            startDate: new Date()
         };
 
         this.onChangeEventTitle = this.onChangeEventTitle.bind(this);
@@ -22,6 +28,7 @@ export default class EditEvent extends Component {
         this.onChangeEventDifficulty = this.onChangeEventDifficulty.bind(this);
         this.onChangeEventCategory = this.onChangeEventCategory.bind(this);
         this.onChangeEventCompleted = this.onChangeEventCompleted.bind(this);
+        this.onDateChange = this.onDateChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onDelete = this.onDelete.bind(this);
     }
@@ -63,6 +70,11 @@ export default class EditEvent extends Component {
             completed: !this.state.completed
         });
     }
+    onDateChange = date => {
+        this.setState({
+            startDate: date
+        });
+    }
 
     onSubmit(e) {
         e.preventDefault();
@@ -73,7 +85,8 @@ export default class EditEvent extends Component {
             collaborators: this.state.collaborators,
             difficulty: this.state.difficulty,
             category: this.state.category,
-            completed: this.state.completed
+            completed: this.state.completed,
+            startDate: this.state.startDate
         };
         console.log(obj);
         axios.post('http://localhost:4000/events/update/'+this.props.match.params.id, obj)
@@ -91,7 +104,8 @@ export default class EditEvent extends Component {
             collaborators: this.state.collaborators,
             difficulty: this.state.difficulty,
             category: this.state.category,
-            completed: this.state.completed
+            completed: this.state.completed,
+            startDate: this.state.startDate
         };
         console.log(obj);
         axios.post('http://localhost:4000/events/delete/'+this.props.match.params.id, obj)
@@ -110,7 +124,8 @@ export default class EditEvent extends Component {
                     collaborators: response.data.collaborators,
                     difficulty: response.data.difficulty,
                     category: response.data.category,
-                    completed: response.data.completed
+                    completed: response.data.completed,
+                    startDate: parseISO(response.data.startDate)
                 })
             })
             .catch(function (error) {
@@ -193,6 +208,12 @@ export default class EditEvent extends Component {
                             />
                             <label className="form-check-label">High</label>
                         </div>
+                    </div>
+                    <div className="date-pick-row">
+                        <DatePicker
+                                selected={this.state.startDate}
+                                onChange={this.onDateChange}
+                        />
                     </div>
                     <div className="form-check">
                         <input  className="form-check-input"
